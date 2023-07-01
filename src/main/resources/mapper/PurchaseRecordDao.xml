@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lixin.trainticketsellsystem.dao.PurchaseRecordDao">
+
+    <resultMap id="BaseResultMap" type="com.lixin.trainticketsellsystem.model.entity.PurchaseRecord">
+        <id property="id" column="id" jdbcType="BIGINT"/>
+        <result property="userId" column="user_id" jdbcType="BIGINT"/>
+        <result property="ticketId" column="ticket_id" jdbcType="BIGINT"/>
+        <result property="purchaseTime" column="purchase_time" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select id,
+               user_id,
+               ticket_id,
+               purchase_time
+        from purchase_record
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+
+    <select id="select" resultType="com.lixin.trainticketsellsystem.model.entity.PurchaseRecord">
+        select id,
+               user_id,
+               ticket_id,
+               purchase_time
+        from purchase_record
+        where user_id = #{userId}
+    </select>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        delete
+        from purchase_record
+        where id = #{id,jdbcType=BIGINT}
+    </delete>
+    <insert id="insert" keyColumn="id" keyProperty="id"
+            parameterType="com.lixin.trainticketsellsystem.model.entity.PurchaseRecord"
+            useGeneratedKeys="true">
+        insert into purchase_record
+        ( id, user_id, ticket_id
+        , purchase_time)
+        values ( #{id,jdbcType=BIGINT}, #{userId,jdbcType=BIGINT}, #{ticketId,jdbcType=BIGINT}
+               , #{purchaseTime,jdbcType=TIMESTAMP})
+    </insert>
+    <insert id="insertSelective" keyColumn="id" keyProperty="id"
+            parameterType="com.lixin.trainticketsellsystem.model.entity.PurchaseRecord"
+            useGeneratedKeys="true">
+        insert into purchase_record
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="userId != null">user_id,</if>
+            <if test="ticketId != null">ticket_id,</if>
+            <if test="purchaseTime != null">purchase_time,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id,jdbcType=BIGINT},</if>
+            <if test="userId != null">#{userId,jdbcType=BIGINT},</if>
+            <if test="ticketId != null">#{ticketId,jdbcType=BIGINT},</if>
+            <if test="purchaseTime != null">#{purchaseTime,jdbcType=TIMESTAMP},</if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective"
+            parameterType="com.lixin.trainticketsellsystem.model.entity.PurchaseRecord">
+        update purchase_record
+        <set>
+            <if test="userId != null">
+                user_id = #{userId,jdbcType=BIGINT},
+            </if>
+            <if test="ticketId != null">
+                ticket_id = #{ticketId,jdbcType=BIGINT},
+            </if>
+            <if test="purchaseTime != null">
+                purchase_time = #{purchaseTime,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.lixin.trainticketsellsystem.model.entity.PurchaseRecord">
+        update purchase_record
+        set user_id       = #{userId,jdbcType=BIGINT},
+            ticket_id     = #{ticketId,jdbcType=BIGINT},
+            purchase_time = #{purchaseTime,jdbcType=TIMESTAMP}
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+</mapper>

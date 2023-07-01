@@ -1,0 +1,40 @@
+spring:
+  profiles:
+    active: dev
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    url: "jdbc:mysql://localhost:3306/train_ticket
+       ?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai"
+    username: root
+    password: root
+  jackson:
+    default-property-inclusion: non_null
+  output:
+    ansi:
+      enabled: always
+
+server:
+  port: 8080
+  servlet:
+    context-path: /train
+
+# Mybatis相关配置
+mybatis:
+  configuration:
+    map-underscore-to-camel-case: true
+  mapper-locations: classpath:mapper/*.xml
+
+pagehelper:
+  helperDialect: mysql
+  reasonable: true
+  supportMethodsArguments: true
+  params: count=countSql
+
+logging:
+  #  config: classpath:log4j2.xml
+  level:
+    com:
+      wt:
+        courseselectionsystem:
+          dao: debug
+
