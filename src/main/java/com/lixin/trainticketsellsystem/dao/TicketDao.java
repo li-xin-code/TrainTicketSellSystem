@@ -7,6 +7,7 @@ import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * @author lixin
@@ -80,4 +81,22 @@ public interface TicketDao {
      * @date 2023/7/1 23:06
      **/
     int updateTicketNumber(@Param("ticketId") long ticketId);
+
+    /**
+     * selectByIds
+     *
+     * @param ticketIds ...
+     * @return java.util.List<com.lixin.trainticketsellsystem.model.entity.Ticket>
+     * @date 2023/7/2 00:13
+     **/
+    List<Ticket> selectByIds(@Param("ticketIds") Set<Long> ticketIds);
+
+    /**
+     * selectAll
+     *
+     * @return java.util.List<com.lixin.trainticketsellsystem.model.entity.Ticket>
+     * @date 2023/7/2 00:48
+     **/
+    List<Ticket> selectAll();
+
 }

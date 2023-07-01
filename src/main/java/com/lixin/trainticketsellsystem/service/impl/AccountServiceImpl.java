@@ -46,6 +46,7 @@ public class AccountServiceImpl implements AccountService {
             LoginResult result = new LoginResult();
             String token = tokenManager.getToken(account.getId());
             result.setToken(token);
+            result.setType(account.getAccountType());
             return result;
         }
         throw new RuntimeException("账号密码错误");
@@ -56,6 +57,7 @@ public class AccountServiceImpl implements AccountService {
         Account account = new Account();
         account.setAccountNo(form.getAccountNo());
         account.setPassword(passwordEncode(form.getPassword()));
+        account.setAccountType(1);
         accountDao.insertAccount(account);
         return true;
     }

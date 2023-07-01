@@ -57,4 +57,23 @@ public interface TicketService {
      * @date 2023/7/1 23:13
      **/
     PurchaseRecordList getPurchaseRecordList(PageRequest pageRequest, Long userId);
+
+    /**
+     * returnTicket
+     *
+     * @param userId   ...
+     * @param ticketId ...
+     * @return boolean
+     * @date 2023/7/2 00:29
+     **/
+    boolean returnTicket(Long userId, long ticketId);
+
+    /**
+     * all
+     *
+     * @param pageRequest ...
+     * @return com.lixin.trainticketsellsystem.model.vo.response.TicketList
+     * @date 2023/7/2 00:46
+     **/
+    TicketList all(PageRequest pageRequest);
 }

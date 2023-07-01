@@ -20,13 +20,34 @@
         where id = #{id,jdbcType=BIGINT}
     </select>
 
-    <select id="select" resultType="com.lixin.trainticketsellsystem.model.entity.PurchaseRecord">
+    <select id="select" resultType="com.lixin.trainticketsellsystem.model.vo.response.PurchaseRecordListItem">
+        select r.id,
+               user_id,
+               ticket_id,
+               purchase_time,
+               t.id as ticket_id,
+               train_number,
+               departure_time,
+               arrival_time,
+               boarding_station,
+               disembarking_station,
+               price,
+               ticket_number
+        from purchase_record r
+                 inner join ticket t on r.ticket_id = t.id
+        where user_id = #{userId}
+    </select>
+
+    <select id="selectOneByUserIdTicketId"
+            resultType="com.lixin.trainticketsellsystem.model.entity.PurchaseRecord">
         select id,
                user_id,
                ticket_id,
                purchase_time
         from purchase_record
         where user_id = #{userId}
+          and ticket_id = #{ticketId}
+        limit 1;
     </select>
 
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">

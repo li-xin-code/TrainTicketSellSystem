@@ -1,5 +1,6 @@
 package com.lixin.trainticketsellsystem.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 import org.hibernate.validator.constraints.Length;
 
@@ -28,14 +29,18 @@ public class Ticket implements Serializable {
     @Size(max = 13, message = "编码长度不能超过13")
     @Length(max = 13, message = "编码长度不能超过13")
     private String trainNumber;
+    
     /**
      * 发车时间
      */
     @NotNull(message = "[发车时间]不能为空")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime departureTime;
+
     /**
      * 到达时间
      */
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @NotNull(message = "[到达时间]不能为空")
     private LocalDateTime arrivalTime;
 

@@ -40,7 +40,32 @@
         where boarding_station = #{query.boardingStation}
           and disembarking_station = #{query.disembarkingStation}
           and departure_time >= #{query.start}
-          and departure_time <![CDATA[<=]]> #{query.end};
+          and departure_time <![CDATA[<=]]> #{query.end}
+    </select>
+
+    <select id="selectByIds" resultType="com.lixin.trainticketsellsystem.model.entity.Ticket">
+        select id,
+               train_number,
+               departure_time,
+               arrival_time,
+               boarding_station,
+               disembarking_station,
+               price,
+               ticket_number
+        from ticket
+        where id in (#{ticketIds})
+    </select>
+
+    <select id="selectAll" resultType="com.lixin.trainticketsellsystem.model.entity.Ticket">
+        select id,
+               train_number,
+               departure_time,
+               arrival_time,
+               boarding_station,
+               disembarking_station,
+               price,
+               ticket_number
+        from ticket
     </select>
 
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">

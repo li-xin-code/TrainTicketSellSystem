@@ -3,6 +3,7 @@ package com.lixin.trainticketsellsystem.dao;
 
 import com.lixin.trainticketsellsystem.model.entity.PurchaseRecord;
 import com.lixin.trainticketsellsystem.model.vo.request.PageRequest;
+import com.lixin.trainticketsellsystem.model.vo.response.PurchaseRecordListItem;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
@@ -68,8 +69,18 @@ public interface PurchaseRecordDao {
      *
      * @param pageRequest ...
      * @param userId      ...
-     * @return java.util.List<com.lixin.trainticketsellsystem.model.entity.PurchaseRecord>
+     * @return ...
      * @date 2023/7/1 23:15
      **/
-    List<PurchaseRecord> select(@Param("pageRequest") PageRequest pageRequest, @Param("userId") Long userId);
+    List<PurchaseRecordListItem> select(@Param("pageRequest") PageRequest pageRequest, @Param("userId") Long userId);
+
+    /**
+     * selectOneByUserIdTicketId
+     *
+     * @param userId   ...
+     * @param ticketId ...
+     * @return com.lixin.trainticketsellsystem.model.entity.PurchaseRecord
+     * @date 2023/7/2 00:32
+     **/
+    PurchaseRecord selectOneByUserIdTicketId(@Param("userId") long userId, @Param("ticketId") long ticketId);
 }

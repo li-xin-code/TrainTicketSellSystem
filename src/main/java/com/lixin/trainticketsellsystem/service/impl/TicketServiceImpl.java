@@ -11,6 +11,7 @@ import com.lixin.trainticketsellsystem.model.entity.Ticket;
 import com.lixin.trainticketsellsystem.model.vo.request.PageRequest;
 import com.lixin.trainticketsellsystem.model.vo.request.TicketQuery;
 import com.lixin.trainticketsellsystem.model.vo.response.PurchaseRecordList;
+import com.lixin.trainticketsellsystem.model.vo.response.PurchaseRecordListItem;
 import com.lixin.trainticketsellsystem.model.vo.response.TicketList;
 import com.lixin.trainticketsellsystem.service.TicketService;
 import lombok.RequiredArgsConstructor;
@@ -21,6 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * @author lixin
@@ -42,7 +44,7 @@ public class TicketServiceImpl implements TicketService {
     @Override
     public boolean del(long id) {
         ticketDao.deleteByPrimaryKey(id);
-        return false;
+        return true;
     }
 
     @Override
@@ -75,9 +77,39 @@ public class TicketServiceImpl implements TicketService {
     @Override
     public PurchaseRecordList getPurchaseRecordList(PageRequest pageRequest, Long userId) {
         PageHelper.startPage(pageRequest.getPageNum(), pageRequest.getPageSize());
-        List<PurchaseRecord> list = purchaseRecordDao.select(pageRequest, userId);
+        List<PurchaseRecordListItem> list = purchaseRecordDao.select(pageRequest, userId);
         PurchaseRecordList result = new PurchaseRecordList();
-        PageInfo<PurchaseRecord> info = new PageInfo<>(list);
+        PageInfo<PurchaseRecordListItem> info = new PageInfo<>(list);
+        SystemUtils.configPageInfo(result, info);
+        result.setList(list);
+        return result;
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    @Override
+    public boolean returnTicket(Long userId, long ticketId) {
+        PurchaseRecord record = purchaseRecordDao.selectOneByUserIdTicketId(userId, ticketId);
+        if (Objects.isNull(record)) {
+            return false;
+        }
+        Long recordTicketId = record.getTicketId();
+        Ticket ticket = ticketDao.selectByPrimaryKey(recordTicketId);
+        LocalDateTime departureTime = ticket.getDepartureTime();
+        if (departureTime.isBefore(LocalDateTime.now())) {
+            throw new RuntimeException("火车已经发车，不可退票。");
+        }
+        ticket.setTicketNumber(ticket.getTicketNumber() + 1);
+        ticketDao.updateByPrimaryKey(ticket);
+        purchaseRecordDao.deleteByPrimaryKey(record.getId());
+        return true;
+    }
+
+    @Override
+    public TicketList all(PageRequest pageRequest) {
+        PageHelper.startPage(pageRequest.getPageNum(), pageRequest.getPageSize());
+        List<Ticket> list = ticketDao.selectAll();
+        TicketList result = new TicketList();
+        PageInfo<Ticket> info = new PageInfo<>(list);
         SystemUtils.configPageInfo(result, info);
         result.setList(list);
         return result;

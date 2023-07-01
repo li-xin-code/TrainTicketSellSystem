@@ -42,6 +42,11 @@ public class TicketController {
         return ResultUtils.success(ticketService.list(query));
     }
 
+    @GetMapping("/all")
+    public DataResult<TicketList> listAll(PageRequest pageRequest) {
+        return ResultUtils.success(ticketService.all(pageRequest));
+    }
+
     @PostMapping("/buy/{ticketId}")
     public NoDataResult buy(@RequestHeader String token, @PathVariable long ticketId) {
         Long userId = Optional.ofNullable(tokenManager.getData(token))
@@ -49,11 +54,32 @@ public class TicketController {
         return ResultUtils.auto(ticketService.buy(userId, ticketId));
     }
 
+    /**
+     * 购票记录
+     *
+     * @param pageRequest ...
+     * @param token       ...
+     * @return ...
+     */
     @GetMapping("/purchase-record")
     public DataResult<PurchaseRecordList> purchaseRecordList(PageRequest pageRequest, @RequestHeader String token) {
         Long userId = Optional.ofNullable(tokenManager.getData(token))
                 .orElseThrow(() -> new RuntimeException("Token invalid."));
         return ResultUtils.success(ticketService.getPurchaseRecordList(pageRequest, userId));
 
+    }
+
+    /**
+     * 退票
+     *
+     * @param ticketId ...
+     * @param token    ...
+     * @return ...
+     */
+    @PutMapping("/return-ticket/{ticketId}")
+    public NoDataResult returnTicket(@PathVariable long ticketId, @RequestHeader String token) {
+        Long userId = Optional.ofNullable(tokenManager.getData(token))
+                .orElseThrow(() -> new RuntimeException("Token invalid."));
+        return ResultUtils.auto(ticketService.returnTicket(userId, ticketId));
     }
 }

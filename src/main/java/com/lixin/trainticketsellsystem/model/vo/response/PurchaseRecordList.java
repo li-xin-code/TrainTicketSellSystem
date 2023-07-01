@@ -1,6 +1,5 @@
 package com.lixin.trainticketsellsystem.model.vo.response;
 
-import com.lixin.trainticketsellsystem.model.entity.PurchaseRecord;
 import com.lixin.trainticketsellsystem.model.vo.response.base.PageResponse;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -14,5 +13,5 @@ import java.util.List;
 @Data
 @EqualsAndHashCode(callSuper = true)
 public class PurchaseRecordList extends PageResponse {
-    private List<PurchaseRecord> list;
+    private List<PurchaseRecordListItem> list;
 }
