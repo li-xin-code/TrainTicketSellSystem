@@ -29,18 +29,20 @@
     </select>
     <select id="select" resultType="com.lixin.trainticketsellsystem.model.entity.Ticket">
         select id,
-               train_number,
-               departure_time,
-               arrival_time,
-               boarding_station,
-               disembarking_station,
-               price,
-               ticket_number
+        train_number,
+        departure_time,
+        arrival_time,
+        boarding_station,
+        disembarking_station,
+        price,
+        ticket_number
         from ticket
         where boarding_station = #{query.boardingStation}
-          and disembarking_station = #{query.disembarkingStation}
-          and departure_time >= #{query.start}
-          and departure_time <![CDATA[<=]]> #{query.end}
+        and disembarking_station = #{query.disembarkingStation}
+        <if test="query.start != null and query.end != null">
+            and departure_time >= #{query.start}
+            and departure_time <![CDATA[<=]]> #{query.end}
+        </if>
     </select>
 
     <select id="selectByIds" resultType="com.lixin.trainticketsellsystem.model.entity.Ticket">

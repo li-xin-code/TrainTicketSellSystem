@@ -19,6 +19,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
@@ -51,8 +52,11 @@ public class TicketServiceImpl implements TicketService {
     public TicketList list(TicketQuery query) {
         TicketQueryBo queryBo = new TicketQueryBo();
         BeanUtils.copyProperties(query, queryBo);
-        queryBo.setStart(query.getDate().atStartOfDay());
-        queryBo.setEnd(query.getDate().atTime(LocalTime.MAX));
+        LocalDate date = query.getDate();
+        if (Objects.nonNull(date)) {
+            queryBo.setStart(date.atStartOfDay());
+            queryBo.setEnd(date.atTime(LocalTime.MAX));
+        }
         PageHelper.startPage(queryBo.getPageNum(), queryBo.getPageSize());
         List<Ticket> list = ticketDao.select(queryBo);
         TicketList result = new TicketList();
