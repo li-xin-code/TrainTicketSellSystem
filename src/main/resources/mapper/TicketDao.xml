@@ -151,7 +151,7 @@
     </update>
     <update id="updateTicketNumber">
         update ticket
-        set ticket_number = ticket_number = 1
+        set ticket_number = ticket_number - 1
         where id = #{ticketId}
           and ticket_number > 1;
     </update>
